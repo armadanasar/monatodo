@@ -1,7 +1,7 @@
-import authApi from '../dataFetch/authApi'
+import auth from '../dataFetch/auth'
 
 function Logout() {
-  authApi.logout()
+  auth.logout()
   window.location = '/'
 
   return null

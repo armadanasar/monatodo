@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -8,119 +8,122 @@ import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 
-import authApi from '../dataFetch/authApi'
+import auth from '../dataFetch/auth'
+import { withStyles } from '@material-ui/styles'
 
-const initialValue = {
-  username: '',
-  password: ''
-}
-
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: '16dp',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
   },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    margin: '8dp',
+    backgroundColor: '#e91e63'
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: '8dp'
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: '6dp 0dp 4dp'
   }
-}))
+})
 
-function Login() {
-  const classes = useStyles()
-  const [loginData, updateLoginData] = useState(initialValue)
-  const handleChange = e => {
+class Login extends Component {
+  state = {
+    username: '',
+    password: ''
+  }
+  handleChange = e => {
     let currentValue = e.target.value
     let inputId = e.target.id
 
-    updateLoginData(prevLoginData => {
-      return { ...prevLoginData, [inputId]: currentValue }
-    })
+    this.setState({ [inputId]: currentValue })
   }
 
-  const authenticateLogin = async () => {
-    const { username, password } = loginData
+  authenticateLogin = async () => {
+    const { username, password } = this.state
 
-    let result = await authApi.login(username, password)
+    let { data, statusCode } = await auth.loginUser(username, password)
 
-    if (result) {
-      authApi.setToken(result.jwt_token)
-      window.location = '/books'
+    if (statusCode === 200) {
+      auth.setToken(data.token)
+      console.log('mihokaneko', data.token)
+      // window.location = '/todos'
+    } else if (statusCode === 500) {
+      if (data.message.match(/email or password un match/gi)) {
+        console.log('salah password')
+      }
+    } else {
+      console.log('login failure')
     }
   }
 
-  authApi.checkIfLoggedInAndSendToHome()
+  render() {
+    const { classes } = this.props
+    return (
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <div className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoFocus
+              onChange={this.handleChange}
+              value={this.state.username}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={this.handleChange}
+              value={this.state.password}
+            />
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <div className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoFocus
-            onChange={handleChange}
-            value={loginData.username}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={handleChange}
-            value={loginData.password}
-          />
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={authenticateLogin}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item>
-              <Link href="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.authenticateLogin}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item>
+                <Link href="/register" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
+          </div>
         </div>
-      </div>
-    </Container>
-  )
+      </Container>
+    )
+  }
 }
 
-export default Login
+export default withStyles(useStyles)(Login)

@@ -1,116 +1,131 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import { CssBaseline, Avatar } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import { LockOpenOutlined } from '@material-ui/icons'
 import Container from '@material-ui/core/Container'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import auth from '../dataFetch/auth'
 
-import authApi from '../dataFetch/authApi'
+import { withStyles } from '@material-ui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: '16dp',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
   },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    margin: '8dp',
+    backgroundColor: '#e91e63'
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: '8dp'
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: '6dp 0dp 4dp'
   }
-}))
+})
 
-const initialValue = {
-  username: '',
-  password: ''
-}
-
-function Register() {
-  const classes = useStyles()
-  const [registerData, updateRegisterData] = useState(initialValue)
-
-  const handleChange = e => {
+class Register extends Component {
+  state = {
+    name: '',
+    email: '',
+    password: ''
+  }
+  handleChange = e => {
     let currentValue = e.target.value
     let inputId = e.target.id
 
-    updateRegisterData(prevLoginData => {
-      return { ...prevLoginData, [inputId]: currentValue }
-    })
+    this.setState({ [inputId]: currentValue })
   }
 
-  const registerUser = async () => {
-    const { username, password } = registerData
+  registerUser = async () => {
+    const { name, email, password } = this.state
 
-    let result = await authApi.register(username, password)
+    let { data, statusCode } = await auth.registerUser(name, email, password)
 
-    if (result) {
-      authApi.setToken(result.jwt_token)
-      window.location = '/books'
+    if (statusCode === 200) {
+      auth.setToken(data.token)
+      console.log('mihokaneko', data.token)
+      // window.location = '/todos'
+    } else if (statusCode === 500) {
+      if (data.message.match(/email or password un match/gi)) {
+        console.log('salah password')
+      }
+    } else {
+      console.log('login failure')
     }
   }
 
-  authApi.checkIfLoggedInAndSendToHome()
-
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOpenOutlined />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Register
-        </Typography>
-
-        <div className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoFocus
-            onChange={handleChange}
-            value={registerData.username}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            onChange={handleChange}
-            value={registerData.password}
-          />
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={registerUser}
-          >
+  render() {
+    const { classes } = this.props
+    return (
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOpenOutlined />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Register
-          </Button>
+          </Typography>
+
+          <div className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Name"
+              name="name"
+              autoFocus
+              onChange={this.handleChange}
+              value={this.state.name}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              name="email"
+              autoFocus
+              onChange={this.handleChange}
+              value={this.state.username}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              onChange={this.handleChange}
+              value={this.state.password}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.registerUser}
+            >
+              Register
+            </Button>
+          </div>
         </div>
-      </div>
-    </Container>
-  )
+      </Container>
+    )
+  }
 }
 
-export default Register
+export default withStyles(useStyles)(Register)
