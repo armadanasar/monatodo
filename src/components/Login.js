@@ -15,7 +15,7 @@ import { withStyles } from '@material-ui/styles'
 
 const useStyles = theme => ({
   paper: {
-    marginTop: '16dp',
+    margin: '10%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
@@ -29,7 +29,7 @@ const useStyles = theme => ({
     marginTop: '8dp'
   },
   submit: {
-    margin: '6dp 0dp 4dp'
+    margin: '6px 0px 4px'
   }
 })
 
