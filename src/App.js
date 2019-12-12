@@ -7,6 +7,10 @@ import Register from './components/Register'
 import Logout from './components/Logout'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import ToDoItem from './components/common/ToDoItem'
+import ToDoList from './components/ToDoList'
+import PageHeader from './components/common/PageHeader'
+import PageFooter from './components/common/PageFooter'
+import Container from '@material-ui/core/Container'
 
 const Placeholder = ({ text }) => {
   return <h1>{text}</h1>
@@ -15,14 +19,15 @@ const Placeholder = ({ text }) => {
 function App() {
   return (
     <div className="App">
+      <header>
+        <PageHeader />
+      </header>
+
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
-        <ProtectedRoute
-          path="/todos"
-          component={props => <Placeholder text="todo lists" />}
-        />
+        <ProtectedRoute path="/todos" component={props => <ToDoList />} />
         <ProtectedRoute
           path="/todo/:todoId"
           component={props => (
@@ -38,15 +43,10 @@ function App() {
         <Redirect from="/" exact to="/todos" />
         <Redirect to="/not-found" />
       </Switch>
-      <ToDoItem
-        id={343}
-        title="Main React"
-        note="Bikin to do list"
-        isDone={false}
-        priority={1}
-        editTodo={k => console.log(k)}
-        deleteTodo={k => console.log(k)}
-      />
+
+      <footer>
+        <PageFooter />
+      </footer>
     </div>
   )
 }

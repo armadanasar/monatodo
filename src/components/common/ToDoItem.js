@@ -37,11 +37,7 @@ class ToDoItem extends Component {
           </Button>
         </TableCell>
         <TableCell align="right">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => deleteTodo(id)}
-          >
+          <Button variant="contained" color="primary" onClick={deleteTodo}>
             <DeleteIcon />
           </Button>
         </TableCell>

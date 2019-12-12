@@ -1,7 +1,7 @@
 import { API_URL, JWT_TOKEN_KEY } from './apiSettings'
 import auth from './auth'
 
-const getUserTodos = async (query) => {
+const getUserTodos = async query => {
   try {
     const result = await fetch(`${API_URL}/todo/user`, {
       method: 'get',
@@ -18,34 +18,34 @@ const getUserTodos = async (query) => {
   }
 }
 
-const createNewUserTodo = ({title, priority, note}) => {
+const createNewUserTodo = async ({ title, priority, note }) => {
   try {
     const result = await fetch(`${API_URL}/todo`, {
-        method: 'post',
-        headers: {
+      method: 'post',
+      headers: {
         Authorization: auth.getToken()
-        },
-        body: {
-            title,
-            priority,
-            note
-        }
+      },
+      body: {
+        title,
+        priority,
+        note
+      }
     })
 
     if (result.status !== 200) throw new Error('failed to create todo')
     return result
   } catch (err) {
     throw err
-  } 
+  }
 }
 
-const getUserTodoById = (todoId) => {
+const getUserTodoById = async todoId => {
   try {
     const result = await fetch(`${API_URL}/todo/${todoId}`, {
-        method: 'get',
-        headers: {
+      method: 'get',
+      headers: {
         Authorization: auth.getToken()
-        }
+      }
     })
 
     if (result.status !== 200) throw new Error('failed to get todo')
@@ -55,18 +55,18 @@ const getUserTodoById = (todoId) => {
   }
 }
 
-const updateUserTodo = (todoId, oldTodo, newTodo)=> {
+const updateUserTodo = async (todoId, oldTodo, newTodo) => {
   try {
     const result = await fetch(`${API_URL}/todo/${todoId}`, {
-        method: 'put',
-        headers: {
-        Authorization: auth.getToken(),
-        },
-        body: {
-          title: newTodo.title || oldTodo.title,
-          priority: newTodo.priority || oldTodo.priority,
-          note: newTodo.note || oldTodo.note
-        }
+      method: 'put',
+      headers: {
+        Authorization: auth.getToken()
+      },
+      body: {
+        title: newTodo.title || oldTodo.title,
+        priority: newTodo.priority || oldTodo.priority,
+        note: newTodo.note || oldTodo.note
+      }
     })
 
     if (result.status !== 200) throw new Error('failed to update todos')
@@ -76,13 +76,13 @@ const updateUserTodo = (todoId, oldTodo, newTodo)=> {
   }
 }
 
-const deleteUserTodo = (todoId) => {
+const deleteUserTodo = async todoId => {
   try {
     const result = await fetch(`${API_URL}/todo/${todoId}`, {
-        method: 'delete',
-        headers: {
-        Authorization: auth.getToken(),
-        }
+      method: 'DELETE',
+      headers: {
+        Authorization: auth.getToken()
+      }
     })
 
     if (result.status !== 200) throw new Error('failed to update todos')
@@ -93,9 +93,9 @@ const deleteUserTodo = (todoId) => {
 }
 
 export default {
-    getUserTodos,
-    createNewUserTodo,
-    getUserTodoById,
-    updateUserTodo,
-    deleteUserTodo
+  getUserTodos,
+  createNewUserTodo,
+  getUserTodoById,
+  updateUserTodo,
+  deleteUserTodo
 }

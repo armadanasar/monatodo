@@ -1,0 +1,23 @@
+.appTitleLink {
+  text-decoration: none;
+  color: black;
+} /* Globally */
+
+/* Each state */
+.appTitleLink:visited {
+  text-decoration: none;
+  color: black;
+}
+.appTitleLink:hover {
+  text-decoration: none;
+  color: black;
+}
+.appTitleLink:focus {
+  text-decoration: none;
+  color: black;
+}
+.appTitleLink:hover,
+.appTitleLink:active {
+  text-decoration: none;
+  color: black;
+}
