@@ -12,7 +12,7 @@ import todoApi from '../dataFetch/todos'
 
 const useStyles = theme => ({
   root: {
-    width: '100%',
+    margin: '5%',
     overflowX: 'auto'
   },
   table: {
@@ -41,7 +41,7 @@ class ToDoList extends Component {
   }
 
   editToDo(todoIdx) {
-    window.location.href = `/todo/${todoIdx}`
+    window.location.href = `/todo/${this.state.todos[todoIdx].id}`
   }
   async deleteToDo(todoIdx) {
     //do the dao and then delete it visually

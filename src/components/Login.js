@@ -35,7 +35,7 @@ const useStyles = theme => ({
 
 class Login extends Component {
   state = {
-    username: '',
+    email: '',
     password: ''
   }
   handleChange = e => {
@@ -46,14 +46,13 @@ class Login extends Component {
   }
 
   authenticateLogin = async () => {
-    const { username, password } = this.state
+    const { email, password } = this.state
 
-    let { data, statusCode } = await auth.loginUser(username, password)
+    let { data, statusCode } = await auth.loginUser(email, password)
 
     if (statusCode === 200) {
       auth.setToken(data.token)
-      console.log('mihokaneko', data.token)
-      // window.location = '/todos'
+      window.location.href = '/todos'
     } else if (statusCode === 500) {
       if (data.message.match(/email or password un match/gi)) {
         console.log('salah password')
@@ -81,9 +80,9 @@ class Login extends Component {
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
+              id="email"
+              label="Email"
+              name="email"
               autoFocus
               onChange={this.handleChange}
               value={this.state.username}

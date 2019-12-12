@@ -11,6 +11,7 @@ import ToDoList from './components/ToDoList'
 import PageHeader from './components/common/PageHeader'
 import PageFooter from './components/common/PageFooter'
 import Container from '@material-ui/core/Container'
+import EditTodo from './components/EditTodo'
 
 const Placeholder = ({ text }) => {
   return <h1>{text}</h1>
@@ -27,15 +28,8 @@ function App() {
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
-        <ProtectedRoute path="/todos" component={props => <ToDoList />} />
-        <ProtectedRoute
-          path="/todo/:todoId"
-          component={props => (
-            <Placeholder
-              text={`Edit todo lists ${props.match.params.todoId}`}
-            />
-          )}
-        />
+        <ProtectedRoute path="/todos" component={ToDoList} />
+        <ProtectedRoute path="/todo/:todoId" component={EditTodo} />
         <Route
           path="/not-found"
           component={props => <Placeholder text="not found 404" />}
