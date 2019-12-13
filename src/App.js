@@ -12,7 +12,7 @@ import PageHeader from './components/common/PageHeader'
 import PageFooter from './components/common/PageFooter'
 import Container from '@material-ui/core/Container'
 import EditTodo from './components/EditTodo'
-import ToDoListToolbar from './ToDoListToolbar'
+import ToDoListToolbar from './components/ToDoListToolbar'
 
 const Placeholder = ({ text }) => {
   return <h1>{text}</h1>

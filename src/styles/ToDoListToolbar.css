@@ -1,0 +1,39 @@
+.toDoListToolbarPane {
+  position: relative;
+  display: flex;
+  width: 100%;
+  text-align: left;
+  margin: 8px;
+  justify-content: space-between;
+}
+
+.single-grow {
+  flex-grow: 1;
+}
+
+.half-grow {
+  flex-grow: 0;
+}
+.max-grow {
+  flex-grow: 3.5;
+}
+
+.searchFilterSelection {
+  display: flex;
+  width: 100%;
+}
+
+.searchQuery {
+  margin: 8px;
+  width: 100%;
+  display: flex;
+}
+
+.toDoListToolbarButtonPane {
+  /* margin: 8px; */
+  display: flex;
+  text-align: left !important;
+}
+.searchQueryPane {
+  margin-left: 16px;
+}

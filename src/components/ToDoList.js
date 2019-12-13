@@ -10,15 +10,14 @@ import ToDoItem from './common/ToDoItem'
 import { withStyles } from '@material-ui/styles'
 import todoApi from '../dataFetch/todos'
 import MaterialTable from 'material-table'
-import ToDoListToolbar from '../ToDoListToolbar'
+import ToDoListToolbar from './ToDoListToolbar'
 
 const useStyles = theme => ({
   root: {
-    margin: '5%',
-    overflowX: 'auto'
+    margin: '5%'
   },
   table: {
-    minWidth: 650
+    minWidth: 700
   }
 })
 
@@ -26,13 +25,6 @@ function createData(id, title, note, isDone, priority) {
   return { id, title, note, isDone, priority }
 }
 
-const rows = [
-  createData(1, 'Frozen yoghurt', 'hahahihi', true, 1),
-  createData(2, 'makan seafood', 'hahahihi', false, 1),
-  createData(3, 'write tests for search', 'get the app runnning', true, 3),
-  createData(4, 'Frozen yoghurt', 'hahahihi', false, 2),
-  createData(5, 'Frozen yoghurt', 'hahahihi', true, 1)
-]
 class ToDoList extends Component {
   constructor(props) {
     super(props)
@@ -76,58 +68,12 @@ class ToDoList extends Component {
   render() {
     const { classes } = this.props
     return (
-      <div style={{ maxWidth: '100%' }}>
-        <MaterialTable
-          title="Todo"
-          columns={[
-            {
-              title: 'Task',
-              field: 'title'
-            },
-            {
-              title: 'Note',
-              field: 'note'
-            },
-            {
-              title: 'Is Done',
-              field: 'isDone'
-            },
-            {
-              title: 'Priority',
-              field: 'priority'
-            }
-          ]}
-          actions={[
-            {
-              icon: 'delete',
-              tooltip: 'Delete Todo',
-              onClick: (event, rowData) => {
-                this.deleteToDo(rowData.id)
-              }
-            },
-            {
-              icon: 'edit',
-              tooltip: 'Edit Todo',
-              onClick: (event, rowData) => {
-                console.log(rowData)
-                this.editToDo(rowData.id)
-              }
-            }
-          ]}
-          data={this.state.todos}
-          options={{ paging: false, actionsColumnIndex: 4 }}
-          components={{
-            Toolbar: props => {
-              return (
-                <ToDoListToolbar
-                  onSearchQueryChange={() => console.log('hoho')}
-                  onSearchFilterSelectionChange={() => console.log('hihi')}
-                ></ToDoListToolbar>
-              )
-            }
-          }}
-        />
-        {/* <Paper className={classes.root}>
+      <div style={{ width: '100%' }}>
+        <Paper className={classes.root}>
+          <ToDoListToolbar
+            onSearchQueryChange={() => console.log('hoho')}
+            onSearchFilterSelectionChange={() => console.log('hihi')}
+          ></ToDoListToolbar>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -154,7 +100,7 @@ class ToDoList extends Component {
               ))}
             </TableBody>
           </Table>
-        </Paper> */}
+        </Paper>
       </div>
     )
   }
