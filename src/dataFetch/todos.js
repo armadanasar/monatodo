@@ -6,7 +6,8 @@ const getUserTodos = async query => {
     const result = await fetch(`${API_URL}/todo/user`, {
       method: 'get',
       headers: {
-        Authorization: auth.getToken()
+        Authorization: auth.getToken(),
+        'Content-Type': 'application/json'
       }
     })
 
@@ -23,13 +24,14 @@ const createNewUserTodo = async ({ title, priority, note }) => {
     const result = await fetch(`${API_URL}/todo`, {
       method: 'post',
       headers: {
-        Authorization: auth.getToken()
+        Authorization: auth.getToken(),
+        'Content-Type': 'application/json'
       },
-      body: {
+      body: JSON.stringify({
         title,
         priority,
         note
-      }
+      })
     })
 
     if (result.status !== 200) throw new Error('failed to create todo')
@@ -44,7 +46,8 @@ const getUserTodoById = async todoId => {
     const result = await fetch(`${API_URL}/todo/${todoId}`, {
       method: 'get',
       headers: {
-        Authorization: auth.getToken()
+        Authorization: auth.getToken(),
+        'Content-Type': 'application/json'
       }
     })
 
@@ -55,18 +58,19 @@ const getUserTodoById = async todoId => {
   }
 }
 
-const updateUserTodo = async (todoId, oldTodo, newTodo) => {
+const updateUserTodo = async (todoId, { title, priority, note }) => {
   try {
     const result = await fetch(`${API_URL}/todo/${todoId}`, {
       method: 'put',
       headers: {
-        Authorization: auth.getToken()
+        Authorization: auth.getToken(),
+        'Content-Type': 'application/json'
       },
-      body: {
-        title: newTodo.title || oldTodo.title,
-        priority: newTodo.priority || oldTodo.priority,
-        note: newTodo.note || oldTodo.note
-      }
+      body: JSON.stringify({
+        title,
+        priority,
+        note
+      })
     })
 
     if (result.status !== 200) throw new Error('failed to update todos')
@@ -81,7 +85,8 @@ const deleteUserTodo = async todoId => {
     const result = await fetch(`${API_URL}/todo/${todoId}`, {
       method: 'DELETE',
       headers: {
-        Authorization: auth.getToken()
+        Authorization: auth.getToken(),
+        'Content-Type': 'application/json'
       }
     })
 

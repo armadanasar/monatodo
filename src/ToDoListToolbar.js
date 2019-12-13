@@ -26,14 +26,7 @@ class ToDoListToolbar extends Component {
     const { filterSelection, searchQuery } = this.state
     return (
       <div>
-        <TextField
-          id="searchQuery"
-          label="Search field"
-          type="search"
-          value={searchQuery}
-          onChange={this.props.onSearchQueryChange}
-        />
-        <FormControl className="hahahihi">
+        <FormControl>
           <InputLabel id="searchFilterSelectionLabel">Status</InputLabel>
           <Select
             id="filterSelection"
@@ -46,6 +39,16 @@ class ToDoListToolbar extends Component {
             <MenuItem value={'undone'}>Undone</MenuItem>
           </Select>
         </FormControl>
+        <TextField
+          id="searchQuery"
+          label="Search field"
+          type="search"
+          value={searchQuery}
+          onChange={this.props.onSearchQueryChange}
+        />
+        <Button variant="contained" color="primary">
+          Search
+        </Button>
         <Button variant="contained" color="primary">
           Add New Todo
         </Button>

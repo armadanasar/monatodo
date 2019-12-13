@@ -115,7 +115,7 @@ class ToDoList extends Component {
             }
           ]}
           data={this.state.todos}
-          options={{ paging: false }}
+          options={{ paging: false, actionsColumnIndex: 4 }}
           components={{
             Toolbar: props => {
               return (

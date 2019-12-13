@@ -1,0 +1,13 @@
+.editTodoContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.submitButton {
+  max-width: 40%;
+  text-align: center;
+}
+
+.editTodoTextField {
+  margin: 16px !important;
+}
