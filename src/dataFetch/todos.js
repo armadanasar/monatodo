@@ -1,15 +1,23 @@
 import { API_URL, JWT_TOKEN_KEY } from './apiSettings'
 import auth from './auth'
 
-const getUserTodos = async query => {
+const getUserTodos = async (searchQuery, filterSelection) => {
   try {
-    const result = await fetch(`${API_URL}/todo/user`, {
-      method: 'get',
-      headers: {
-        Authorization: auth.getToken(),
-        'Content-Type': 'application/json'
+    const result = await fetch(
+      `${API_URL}/todo/user?` +
+        new URLSearchParams({
+          filter: filterSelection || 'all',
+          q: searchQuery || ''
+        }),
+      {
+        method: 'get',
+        headers: {
+          Authorization: auth.getToken(),
+          'Content-Type': 'application/json'
+        },
+        qs: {}
       }
-    })
+    )
 
     if (result.status !== 200) throw new Error('failed to get todos')
 

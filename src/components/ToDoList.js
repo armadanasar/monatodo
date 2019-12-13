@@ -53,7 +53,6 @@ class ToDoList extends Component {
       if (result.status !== 200) throw new Error(result.text())
 
       todos.splice(targetTodoIdx, 1)
-      // this.setState({ todos })
       this.props.setTodos(todos)
     } catch ({ message }) {
       alert(message)
@@ -64,8 +63,7 @@ class ToDoList extends Component {
     try {
       let result = await todoApi.getUserTodos()
       result = await result.json()
-      console.log(result)
-      // this.setState({ todos: result.data })
+
       this.props.setTodos(result.data)
     } catch ({ message }) {
       alert(message)
@@ -82,7 +80,12 @@ class ToDoList extends Component {
   }
   onSearchButtonClick = async () => {
     const { searchQuery, filterSelection } = this.state
-    console.log(searchQuery, filterSelection)
+
+    let result = await todoApi.getUserTodos(searchQuery, filterSelection)
+
+    result = await result.json()
+
+    this.props.setTodos(result.data)
   }
   render() {
     const { searchQuery, filterSelection } = this.state
