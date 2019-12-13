@@ -7,6 +7,9 @@ import InputLabel from '@material-ui/core/InputLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Button from '@material-ui/core/Button'
+import SearchIcon from '@material-ui/icons/Search'
+
+import AddIcon from '@material-ui/icons/Add'
 import '../styles/ToDoListToolbar.css'
 
 class ToDoListToolbar extends Component {
@@ -14,6 +17,7 @@ class ToDoListToolbar extends Component {
     const {
       onSearchFilterSelectionChange,
       onSearchQueryChange,
+      onSearchButtonClick,
       onClickAddNewTodo,
       filterSelectionValue: filterSelection,
       searchQueryValue: searchQuery
@@ -46,16 +50,22 @@ class ToDoListToolbar extends Component {
         </div>
 
         <div className="toDoListToolbarButtonPane">
-          <Button className="searchButton" variant="contained" color="primary">
-            Search
+          <Button
+            className="searchButton"
+            variant="contained"
+            color="primary"
+            onClick={onSearchButtonClick}
+          >
+            <SearchIcon />
           </Button>
+
           <Button
             className="addNewTodoButton"
             variant="contained"
             color="primary"
             onClick={onClickAddNewTodo}
           >
-            Add New Todo
+            <AddIcon />
           </Button>
         </div>
       </div>

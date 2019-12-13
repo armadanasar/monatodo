@@ -71,7 +71,7 @@ function PageHeader() {
           noWrap
           className={classes.toolbarTitle}
         >
-          <a href="/" class="appTitleLink">
+          <a href="/" className="appTitleLink">
             Monatodo
           </a>
         </Typography>

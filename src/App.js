@@ -13,6 +13,8 @@ import PageFooter from './components/common/PageFooter'
 import Container from '@material-ui/core/Container'
 import EditTodo from './components/EditTodo'
 import ToDoListToolbar from './components/ToDoListToolbar'
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
 const Placeholder = ({ text }) => {
   return <h1>{text}</h1>
@@ -20,29 +22,31 @@ const Placeholder = ({ text }) => {
 
 function App() {
   return (
-    <div className="App">
-      <header>
-        <PageHeader />
-      </header>
+    <Provider store={store}>
+      <div className="App">
+        <header>
+          <PageHeader />
+        </header>
 
-      <Switch>
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
-        <Route path="/logout" component={Logout} />
-        <ProtectedRoute path="/todos" component={ToDoList} />
-        <ProtectedRoute path="/todo/:todoId" component={EditTodo} />
-        <ProtectedRoute path="/todo/new" component={EditTodo} />
-        <Route
-          path="/not-found"
-          component={props => <Placeholder text="not found 404" />}
-        />
-        <Redirect from="/" exact to="/todos" />
-        <Redirect to="/not-found" />
-      </Switch>
-      <footer>
-        <PageFooter />
-      </footer>
-    </div>
+        <Switch>
+          <Route path="/register" component={Register} />
+          <Route path="/login" component={Login} />
+          <Route path="/logout" component={Logout} />
+          <ProtectedRoute path="/todos" component={ToDoList} />
+          <ProtectedRoute path="/todo/:todoId" component={EditTodo} />
+          <ProtectedRoute path="/todo/new" component={EditTodo} />
+          <Route
+            path="/not-found"
+            component={props => <Placeholder text="not found 404" />}
+          />
+          <Redirect from="/" exact to="/todos" />
+          <Redirect to="/not-found" />
+        </Switch>
+        <footer>
+          <PageFooter />
+        </footer>
+      </div>
+    </Provider>
   )
 }
 

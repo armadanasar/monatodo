@@ -11,6 +11,8 @@ import { withStyles } from '@material-ui/styles'
 import todoApi from '../dataFetch/todos'
 import MaterialTable from 'material-table'
 import ToDoListToolbar from './ToDoListToolbar'
+import { setTodo } from '../redux/todo/todoActions'
+import { connect } from 'react-redux'
 
 const useStyles = theme => ({
   root: {
@@ -31,24 +33,28 @@ class ToDoList extends Component {
   }
 
   state = {
-    todos: []
+    todos: [],
+    searchQuery: '',
+    filterSelection: ''
   }
 
   editToDo(todoIdx) {
     window.location.href = `/todo/${todoIdx}`
   }
-  async deleteToDo(todoIdx) {
+  deleteToDo = async todoIdx => {
     try {
-      const targetTodoIdx = this.state.todos.findIndex(
+      const targetTodoIdx = this.props.todos.findIndex(
         todo => todo.id === todoIdx
       )
+      console.log(targetTodoIdx)
       const result = await todoApi.deleteUserTodo(todoIdx)
-      const todos = [...this.state.todos]
+      const todos = [...this.props.todos]
 
       if (result.status !== 200) throw new Error(result.text())
 
       todos.splice(targetTodoIdx, 1)
-      this.setState({ todos })
+      // this.setState({ todos })
+      this.props.setTodos(todos)
     } catch ({ message }) {
       alert(message)
     }
@@ -59,20 +65,38 @@ class ToDoList extends Component {
       let result = await todoApi.getUserTodos()
       result = await result.json()
       console.log(result)
-      this.setState({ todos: result.data })
+      // this.setState({ todos: result.data })
+      this.props.setTodos(result.data)
     } catch ({ message }) {
       alert(message)
     }
   }
-
+  onSearchQueryChange = async e => {
+    this.setState({ searchQuery: e.target.value })
+  }
+  onSearchFilterSelectionChange = async e => {
+    this.setState({ filterSelection: e.target.value })
+  }
+  onClickAddNewTodo = () => {
+    window.location.href = '/todo/new'
+  }
+  onSearchButtonClick = async () => {
+    const { searchQuery, filterSelection } = this.state
+    console.log(searchQuery, filterSelection)
+  }
   render() {
-    const { classes } = this.props
+    const { searchQuery, filterSelection } = this.state
+    const { classes, todos, setTodos } = this.props
     return (
       <div style={{ width: '100%' }}>
         <Paper className={classes.root}>
           <ToDoListToolbar
-            onSearchQueryChange={() => console.log('hoho')}
-            onSearchFilterSelectionChange={() => console.log('hihi')}
+            onSearchQueryChange={this.onSearchQueryChange}
+            onSearchFilterSelectionChange={this.onSearchFilterSelectionChange}
+            onClickAddNewTodo={this.onClickAddNewTodo}
+            searchQuery={searchQuery}
+            filterSelection={filterSelection}
+            onSearchButtonClick={this.onSearchButtonClick}
           ></ToDoListToolbar>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
@@ -86,7 +110,7 @@ class ToDoList extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.todos.map((row, idx) => (
+              {this.props.todos.map((row, idx) => (
                 <ToDoItem
                   key={idx}
                   id={row.id}
@@ -94,8 +118,8 @@ class ToDoList extends Component {
                   note={row.note}
                   isDone={row.isDone}
                   priority={row.priority}
-                  editTodo={() => this.editToDo(idx)}
-                  deleteTodo={() => this.deleteToDo(idx)}
+                  editTodo={() => this.editToDo(row.id)}
+                  deleteTodo={() => this.deleteToDo(row.id)}
                 />
               ))}
             </TableBody>
@@ -106,4 +130,17 @@ class ToDoList extends Component {
   }
 }
 
-export default withStyles(useStyles)(ToDoList)
+function mapStateToProps(state) {
+  return {
+    todos: state
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return { setTodos: payload => dispatch(setTodo(payload)) }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(useStyles)(ToDoList))
