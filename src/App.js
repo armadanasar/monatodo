@@ -12,6 +12,7 @@ import PageHeader from './components/common/PageHeader'
 import PageFooter from './components/common/PageFooter'
 import Container from '@material-ui/core/Container'
 import EditTodo from './components/EditTodo'
+import ToDoListToolbar from './ToDoListToolbar'
 
 const Placeholder = ({ text }) => {
   return <h1>{text}</h1>
@@ -30,6 +31,7 @@ function App() {
         <Route path="/logout" component={Logout} />
         <ProtectedRoute path="/todos" component={ToDoList} />
         <ProtectedRoute path="/todo/:todoId" component={EditTodo} />
+        <ProtectedRoute path="/todo/new" component={EditTodo} />
         <Route
           path="/not-found"
           component={props => <Placeholder text="not found 404" />}
@@ -37,7 +39,6 @@ function App() {
         <Redirect from="/" exact to="/todos" />
         <Redirect to="/not-found" />
       </Switch>
-
       <footer>
         <PageFooter />
       </footer>

@@ -94,7 +94,6 @@ class Register extends Component {
               id="email"
               label="Email"
               name="email"
-              autoFocus
               onChange={this.handleChange}
               value={this.state.username}
             />

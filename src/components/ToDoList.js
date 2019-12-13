@@ -9,6 +9,8 @@ import Paper from '@material-ui/core/Paper'
 import ToDoItem from './common/ToDoItem'
 import { withStyles } from '@material-ui/styles'
 import todoApi from '../dataFetch/todos'
+import MaterialTable from 'material-table'
+import ToDoListToolbar from '../ToDoListToolbar'
 
 const useStyles = theme => ({
   root: {
@@ -41,18 +43,20 @@ class ToDoList extends Component {
   }
 
   editToDo(todoIdx) {
-    window.location.href = `/todo/${this.state.todos[todoIdx].id}`
+    window.location.href = `/todo/${todoIdx}`
   }
   async deleteToDo(todoIdx) {
     //do the dao and then delete it visually
     try {
-      const todo = this.state.todos[todoIdx]
-      const result = await todoApi.deleteUserTodo(todo.id)
+      const targetTodoIdx = this.state.todos.findIndex(
+        todo => todo.id === todoIdx
+      )
+      const result = await todoApi.deleteUserTodo(todoIdx)
       const todos = [...this.state.todos]
 
       if (result.status !== 200) throw new Error(result.text())
 
-      todos.splice(todoIdx, 1)
+      todos.splice(targetTodoIdx, 1)
       this.setState({ todos })
     } catch ({ message }) {
       alert(message)
@@ -73,8 +77,49 @@ class ToDoList extends Component {
   render() {
     const { classes } = this.props
     return (
-      <div>
-        <Paper className={classes.root}>
+      <div style={{ maxWidth: '100%' }}>
+        <MaterialTable
+          title="Todo"
+          columns={[
+            {
+              title: 'Task',
+              field: 'title'
+            },
+            {
+              title: 'Note',
+              field: 'note'
+            },
+            {
+              title: 'Is Done',
+              field: 'isDone'
+            },
+            {
+              title: 'Priority',
+              field: 'priority'
+            }
+          ]}
+          actions={[
+            {
+              icon: 'delete',
+              tooltip: 'Delete Todo',
+              onClick: (event, rowData) => {
+                this.deleteToDo(rowData.id)
+              }
+            },
+            {
+              icon: 'edit',
+              tooltip: 'Edit Todo',
+              onClick: (event, rowData) => {
+                console.log(rowData)
+                this.editToDo(rowData.id)
+              }
+            }
+          ]}
+          data={this.state.todos}
+          options={{ paging: false }}
+          components={{ Toolbar: ToDoListToolbar }}
+        />
+        {/* <Paper className={classes.root}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -101,7 +146,7 @@ class ToDoList extends Component {
               ))}
             </TableBody>
           </Table>
-        </Paper>
+        </Paper> */}
       </div>
     )
   }

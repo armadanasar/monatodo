@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import todos from '../dataFetch/todos'
+import Container from '@material-ui/core/Container'
 
 class EditTodo extends Component {
   state = { todo: {} }
@@ -18,7 +19,7 @@ class EditTodo extends Component {
   }
 
   render() {
-    return <div>{JSON.stringify(this.state.todo)}</div>
+    return <Container fixed></Container>
   }
 }
 
