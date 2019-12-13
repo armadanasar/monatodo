@@ -46,7 +46,6 @@ class ToDoList extends Component {
     window.location.href = `/todo/${todoIdx}`
   }
   async deleteToDo(todoIdx) {
-    //do the dao and then delete it visually
     try {
       const targetTodoIdx = this.state.todos.findIndex(
         todo => todo.id === todoIdx
@@ -117,7 +116,16 @@ class ToDoList extends Component {
           ]}
           data={this.state.todos}
           options={{ paging: false }}
-          components={{ Toolbar: ToDoListToolbar }}
+          components={{
+            Toolbar: props => {
+              return (
+                <ToDoListToolbar
+                  onSearchQueryChange={() => console.log('hoho')}
+                  onSearchFilterSelectionChange={() => console.log('hihi')}
+                ></ToDoListToolbar>
+              )
+            }
+          }}
         />
         {/* <Paper className={classes.root}>
           <Table className={classes.table} aria-label="simple table">

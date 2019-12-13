@@ -31,7 +31,7 @@ class ToDoListToolbar extends Component {
           label="Search field"
           type="search"
           value={searchQuery}
-          onChange={this.handleChange}
+          onChange={this.props.onSearchQueryChange}
         />
         <FormControl className="hahahihi">
           <InputLabel id="searchFilterSelectionLabel">Status</InputLabel>
@@ -39,7 +39,7 @@ class ToDoListToolbar extends Component {
             id="filterSelection"
             labelId="searchFilterSelection"
             value={filterSelection}
-            onChange={this.handleChange}
+            onChange={this.props.onSearchFilterSelectionChange}
           >
             <MenuItem value={'all'}>All</MenuItem>
             <MenuItem value={'done'}>Done</MenuItem>
