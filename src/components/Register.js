@@ -43,20 +43,15 @@ class Register extends Component {
   }
 
   registerUser = async () => {
-    const { name, email, password } = this.state
+    try {
+      const { name, email, password } = this.state
 
-    let { data, statusCode } = await auth.registerUser(name, email, password)
+      let { data, statusCode } = await auth.registerUser(name, email, password)
 
-    if (statusCode === 200) {
       auth.setToken(data.token)
-      console.log('mihokaneko', data.token)
-      // window.location = '/todos'
-    } else if (statusCode === 500) {
-      if (data.message.match(/email or password un match/gi)) {
-        console.log('salah password')
-      }
-    } else {
-      console.log('login failure')
+      window.location = '/todos'
+    } catch ({ message }) {
+      console.log(message)
     }
   }
 

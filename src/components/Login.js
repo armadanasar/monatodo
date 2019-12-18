@@ -46,19 +46,21 @@ class Login extends Component {
   }
 
   authenticateLogin = async () => {
-    const { email, password } = this.state
+    try {
+      const { email, password } = this.state
 
-    let { data, statusCode } = await auth.loginUser(email, password)
+      let { data, statusCode } = await auth.loginUser(email, password)
 
-    if (statusCode === 200) {
-      auth.setToken(data.token)
-      window.location.href = '/todos'
-    } else if (statusCode === 500) {
-      if (data.message.match(/email or password un match/gi)) {
-        console.log('salah password')
+      if (statusCode === 200) {
+        auth.setToken(data.token)
+        window.location.href = '/todos'
       }
-    } else {
-      console.log('login failure')
+    } catch ({ message }) {
+      if (message.match(/email or password un match/gi)) {
+        console.log('salah password')
+      } else {
+        console.log('unknown login failure!')
+      }
     }
   }
 

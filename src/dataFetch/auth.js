@@ -14,7 +14,12 @@ const registerUser = async (name, email, password) => {
       })
     })
 
-    return result.json()
+    if (result.status !== 200) {
+      const errorMessage = await result.text()
+      throw new Error(errorMessage)
+    }
+
+    return await result.json()
   } catch (err) {
     throw err
   }
@@ -33,7 +38,11 @@ const loginUser = async (email, password) => {
       })
     })
 
-    return result.json()
+    if (result.status !== 200) {
+      const errorMessage = await result.text()
+      throw new Error(errorMessage)
+    }
+    return await result.json()
   } catch (err) {
     throw err
   }

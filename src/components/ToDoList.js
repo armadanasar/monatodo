@@ -23,10 +23,6 @@ const useStyles = theme => ({
   }
 })
 
-function createData(id, title, note, isDone, priority) {
-  return { id, title, note, isDone, priority }
-}
-
 class ToDoList extends Component {
   constructor(props) {
     super(props)
@@ -46,16 +42,14 @@ class ToDoList extends Component {
       const targetTodoIdx = this.props.todos.findIndex(
         todo => todo.id === todoIdx
       )
-      console.log(targetTodoIdx)
+
       const result = await todoApi.deleteUserTodo(todoIdx)
       const todos = [...this.props.todos]
-
-      if (result.status !== 200) throw new Error(result.text())
 
       todos.splice(targetTodoIdx, 1)
       this.props.setTodos(todos)
     } catch ({ message }) {
-      alert(message)
+      console.log(message)
     }
   }
 
@@ -66,7 +60,7 @@ class ToDoList extends Component {
 
       this.props.setTodos(result.data)
     } catch ({ message }) {
-      alert(message)
+      console.log(message)
     }
   }
   onSearchQueryChange = async e => {

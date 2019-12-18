@@ -14,37 +14,33 @@ class EditTodo extends Component {
   }
 
   componentDidMount = async () => {
-    let todoId = this.props.match.params.todoId
+    try {
+      let todoId = this.props.match.params.todoId
 
-    if (todoId !== 'new') {
-      try {
+      if (todoId !== 'new') {
         let result = await todos.getUserTodoById(todoId)
-        if (result.status !== 200)
-          throw new Error(`unable to fetch todo id ${todoId}`)
+
         result = await result.json()
         this.setState({ ...result.data })
-      } catch ({ message }) {
-        console.log(message)
       }
-    }
 
-    this.setState({ todoId })
+      this.setState({ todoId })
+    } catch ({ message }) {
+      console.log(message)
+    }
   }
 
   saveTodoEdit = async () => {
     try {
       let todoId = this.state.todoId
       let todo = { ...this.state }
-      let result
+
       if (todoId !== 'new') {
-        result = await todos.updateUserTodo(todoId, todo)
+        await todos.updateUserTodo(todoId, todo)
       } else {
-        result = await todos.createNewUserTodo(todo)
+        await todos.createNewUserTodo(todo)
       }
-      if (result.status !== 200) throw new Error(`unable to create/update todo`)
-      else {
-        window.location.href = '/todos'
-      }
+      window.location.href = '/todos'
     } catch ({ message }) {
       console.log(message)
     }

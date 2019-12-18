@@ -19,7 +19,10 @@ const getUserTodos = async (searchQuery, filterSelection) => {
       }
     )
 
-    if (result.status !== 200) throw new Error('failed to get todos')
+    if (result.status !== 200) {
+      const errorMessage = await result.text()
+      throw new Error(errorMessage)
+    }
 
     return result
   } catch (err) {
@@ -42,7 +45,10 @@ const createNewUserTodo = async ({ title, priority, note }) => {
       })
     })
 
-    if (result.status !== 200) throw new Error('failed to create todo')
+    if (result.status !== 200) {
+      const errorMessage = await result.text()
+      throw new Error(errorMessage)
+    }
     return result
   } catch (err) {
     throw err
@@ -59,7 +65,10 @@ const getUserTodoById = async todoId => {
       }
     })
 
-    if (result.status !== 200) throw new Error('failed to get todo')
+    if (result.status !== 200) {
+      const errorMessage = await result.text()
+      throw new Error(errorMessage)
+    }
     return result
   } catch (err) {
     throw err
@@ -81,7 +90,10 @@ const updateUserTodo = async (todoId, { title, priority, note }) => {
       })
     })
 
-    if (result.status !== 200) throw new Error('failed to update todos')
+    if (result.status !== 200) {
+      const errorMessage = await result.text()
+      throw new Error(errorMessage)
+    }
     return result
   } catch (err) {
     throw err
@@ -98,7 +110,10 @@ const deleteUserTodo = async todoId => {
       }
     })
 
-    if (result.status !== 200) throw new Error('failed to update todos')
+    if (result.status !== 200) {
+      const errorMessage = await result.text()
+      throw new Error(errorMessage)
+    }
     return result
   } catch (err) {
     throw err
