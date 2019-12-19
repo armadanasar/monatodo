@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container'
 
 import auth from '../dataFetch/auth'
 import { withStyles } from '@material-ui/styles'
+import { withSnackbar } from 'notistack'
 
 const useStyles = theme => ({
   paper: {
@@ -57,9 +58,9 @@ class Login extends Component {
       }
     } catch ({ message }) {
       if (message.match(/email or password un match/gi)) {
-        console.log('salah password')
+        this.props.enqueueSnackbar('Wrong username or password')
       } else {
-        console.log('unknown login failure!')
+        this.props.enqueueSnackbar('unknown login failure!')
       }
     }
   }
@@ -127,4 +128,4 @@ class Login extends Component {
   }
 }
 
-export default withStyles(useStyles)(Login)
+export default withSnackbar(withStyles(useStyles)(Login))

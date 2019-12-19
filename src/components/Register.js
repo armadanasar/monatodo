@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import auth from '../dataFetch/auth'
 
 import { withStyles } from '@material-ui/styles'
+import { withSnackbar } from 'notistack'
 
 const useStyles = theme => ({
   paper: {
@@ -122,4 +123,4 @@ class Register extends Component {
   }
 }
 
-export default withStyles(useStyles)(Register)
+export default withSnackbar(withStyles(useStyles)(Register))

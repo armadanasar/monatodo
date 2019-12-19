@@ -3,8 +3,10 @@
   display: flex;
   width: 100%;
   text-align: left;
-  margin: 8px;
+  flex-direction: row;
+  /* margin: 8px; */
   justify-content: space-between;
+  margin-right: 20px;
 }
 
 .single-grow {
@@ -36,4 +38,8 @@
 }
 .searchQueryPane {
   margin-left: 16px;
+}
+
+.addNewTodoButton {
+  margin-right: 20px;
 }

@@ -63,6 +63,7 @@ class ToDoListToolbar extends Component {
             className="addNewTodoButton"
             variant="contained"
             color="primary"
+            style={{ marginRight: '20px' }}
             onClick={onClickAddNewTodo}
           >
             <AddIcon />
