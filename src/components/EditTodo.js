@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import x from '../styles/EditTodo.css'
+import { withSnackbar } from 'notistack'
 
 class EditTodo extends Component {
   state = {
@@ -27,6 +28,7 @@ class EditTodo extends Component {
       this.setState({ todoId })
     } catch ({ message }) {
       console.log(message)
+      this.props.enqueueSnackbar('Cannot fetch todo detail')
     }
   }
 
@@ -43,6 +45,7 @@ class EditTodo extends Component {
       window.location.href = '/todos'
     } catch ({ message }) {
       console.log(message)
+      this.props.enqueueSnackbar('Cannot save todo')
     }
   }
 
@@ -98,4 +101,4 @@ class EditTodo extends Component {
   }
 }
 
-export default EditTodo
+export default withSnackbar(EditTodo)

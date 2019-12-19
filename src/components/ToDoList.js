@@ -13,6 +13,7 @@ import MaterialTable from 'material-table'
 import ToDoListToolbar from './ToDoListToolbar'
 import { setTodo } from '../redux/todo/todoActions'
 import { connect } from 'react-redux'
+import { withSnackbar } from 'notistack'
 
 const useStyles = theme => ({
   root: {
@@ -50,6 +51,7 @@ class ToDoList extends Component {
       this.props.setTodos(todos)
     } catch ({ message }) {
       console.log(message)
+      this.props.enqueueSnackbar('Cannot delete user todo')
     }
   }
 
@@ -61,6 +63,7 @@ class ToDoList extends Component {
       this.props.setTodos(result.data)
     } catch ({ message }) {
       console.log(message)
+      this.props.enqueueSnackbar('Cannot get user todos')
     }
   }
   onSearchQueryChange = async e => {
@@ -73,13 +76,18 @@ class ToDoList extends Component {
     window.location.href = '/todo/new'
   }
   onSearchButtonClick = async () => {
-    const { searchQuery, filterSelection } = this.state
+    try {
+      const { searchQuery, filterSelection } = this.state
 
-    let result = await todoApi.getUserTodos(searchQuery, filterSelection)
+      let result = await todoApi.getUserTodos(searchQuery, filterSelection)
 
-    result = await result.json()
+      result = await result.json()
 
-    this.props.setTodos(result.data)
+      this.props.setTodos(result.data)
+    } catch ({ message }) {
+      console.error(message)
+      this.props.enqueueSnackbar('Cannot get user todos')
+    }
   }
   render() {
     const { searchQuery, filterSelection } = this.state
@@ -137,7 +145,6 @@ function mapDispatchToProps(dispatch) {
   return { setTodos: payload => dispatch(setTodo(payload)) }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(useStyles)(ToDoList))
+export default withSnackbar(
+  connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(ToDoList))
+)
