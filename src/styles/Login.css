@@ -1,0 +1,17 @@
+.paper {
+  margin: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+div.avatar {
+  margin: 8dp;
+  background-color: #e91e63;
+}
+.form {
+  width: 100%;
+  margin-top: 8dp;
+}
+.submit {
+  margin: 6px 0px 4px;
+}

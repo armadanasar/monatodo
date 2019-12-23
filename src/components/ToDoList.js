@@ -15,14 +15,7 @@ import { setTodo } from '../redux/todo/todoActions'
 import { connect } from 'react-redux'
 import { withSnackbar } from 'notistack'
 
-const useStyles = theme => ({
-  root: {
-    margin: '5%'
-  },
-  table: {
-    minWidth: 700
-  }
-})
+import '../styles/ToDoList.css'
 
 class ToDoList extends Component {
   constructor(props) {
@@ -94,7 +87,7 @@ class ToDoList extends Component {
     const { classes, todos, setTodos } = this.props
     return (
       <div style={{ width: '100%' }}>
-        <Paper className={classes.root}>
+        <Paper className="root">
           <ToDoListToolbar
             onSearchQueryChange={this.onSearchQueryChange}
             onSearchFilterSelectionChange={this.onSearchFilterSelectionChange}
@@ -103,7 +96,7 @@ class ToDoList extends Component {
             filterSelection={filterSelection}
             onSearchButtonClick={this.onSearchButtonClick}
           ></ToDoListToolbar>
-          <Table className={classes.table} aria-label="simple table">
+          <Table className="table" aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell>Task</TableCell>
@@ -146,5 +139,5 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default withSnackbar(
-  connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(ToDoList))
+  connect(mapStateToProps, mapDispatchToProps)(ToDoList)
 )

@@ -9,30 +9,11 @@ import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
-
-import auth from '../dataFetch/auth'
 import { withStyles } from '@material-ui/styles'
 import { withSnackbar } from 'notistack'
 
-const useStyles = theme => ({
-  paper: {
-    margin: '10%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  avatar: {
-    margin: '8dp',
-    backgroundColor: '#e91e63'
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: '8dp'
-  },
-  submit: {
-    margin: '6px 0px 4px'
-  }
-})
+import '../styles/Login.css'
+import auth from '../dataFetch/auth'
 
 class Login extends Component {
   state = {
@@ -46,7 +27,8 @@ class Login extends Component {
     this.setState({ [inputId]: currentValue })
   }
 
-  authenticateLogin = async () => {
+  authenticateLogin = async e => {
+    e.preventDefault()
     try {
       const { email, password } = this.state
 
@@ -66,18 +48,17 @@ class Login extends Component {
   }
 
   render() {
-    const { classes } = this.props
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
+        <div className="paper">
+          <Avatar className="avatar">
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <div className={classes.form} noValidate>
+          <form className="form" onSubmit={this.authenticateLogin} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
@@ -109,7 +90,7 @@ class Login extends Component {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
+              className="submit"
               onClick={this.authenticateLogin}
             >
               Sign In
@@ -121,11 +102,11 @@ class Login extends Component {
                 </Link>
               </Grid>
             </Grid>
-          </div>
+          </form>
         </div>
       </Container>
     )
   }
 }
 
-export default withSnackbar(withStyles(useStyles)(Login))
+export default withSnackbar(Login)

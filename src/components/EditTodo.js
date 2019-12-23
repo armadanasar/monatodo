@@ -3,8 +3,9 @@ import todos from '../dataFetch/todos'
 import Container from '@material-ui/core/Container'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import x from '../styles/EditTodo.css'
 import { withSnackbar } from 'notistack'
+
+import '../styles/EditTodo.css'
 
 class EditTodo extends Component {
   state = {
