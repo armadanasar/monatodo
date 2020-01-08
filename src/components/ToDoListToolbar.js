@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
-
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Button from '@material-ui/core/Button'
 import SearchIcon from '@material-ui/icons/Search'
-
 import AddIcon from '@material-ui/icons/Add'
+
 import '../styles/ToDoListToolbar.css'
 
 class ToDoListToolbar extends Component {
