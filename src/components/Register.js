@@ -17,25 +17,13 @@ class Register extends Component {
     email: '',
     password: ''
   }
-  handleChange = e => {
-    let currentValue = e.target.value
-    let inputId = e.target.id
 
-    this.setState({ [inputId]: currentValue })
-  }
-
-  registerUser = async () => {
-    try {
-      const { name, email, password } = this.state
-
-      let { data } = await auth.registerUser(name, email, password)
-
-      auth.setToken(data.token)
-      window.location = '/todos'
-    } catch ({ message }) {
-      console.log(message)
-      this.props.enqueueSnackbar('Cannot register user')
-    }
+  errorMessages = {
+    INVALID_EMAIL_ADDRESS: 'Invalid email address',
+    EMAIL_IS_REQUIRED: 'Email is required',
+    NAME_IS_REQUIRED: 'Name is required',
+    PASSWORD_IS_REQUIRED: 'Password is required',
+    UNKNOWN_REGISTER_ERROR: 'Cannot register user'
   }
 
   render() {
@@ -51,7 +39,7 @@ class Register extends Component {
             Register
           </Typography>
 
-          <form className="form">
+          <div className="form">
             <TextField
               variant="outlined"
               margin="normal"
@@ -98,10 +86,44 @@ class Register extends Component {
             >
               Register
             </Button>
-          </form>
+          </div>
         </div>
       </Container>
     )
+  }
+
+  handleChange = e => {
+    let currentValue = e.target.value
+    let inputId = e.target.id
+
+    this.setState({ [inputId]: currentValue })
+  }
+
+  registerUser = async () => {
+    try {
+      const { name, email, password } = this.state
+
+      let { data } = await auth.registerUser(name, email, password)
+
+      auth.setToken(data.token)
+      window.location = '/todos'
+    } catch ({ message }) {
+      console.log(message)
+      message = this.composeRegisterErrorMessage(message)
+      this.props.enqueueSnackbar(message)
+    }
+  }
+
+  composeRegisterErrorMessage = errorMessage => {
+    if (errorMessage.match(/must be a valid email/gi))
+      return this.errorMessages.INVALID_EMAIL_ADDRESS
+    if (errorMessage.match(/name.*empty/gi))
+      return this.errorMessages.NAME_IS_REQUIRED
+    if (errorMessage.match(/email.*empty/gi))
+      return this.errorMessages.EMAIL_IS_REQUIRED
+    if (errorMessage.match(/password.*empty/gi))
+      return this.errorMessages.PASSWORD_IS_REQUIRED
+    else return this.errorMessages.UNKNOWN_REGISTER_ERROR
   }
 }
 

@@ -20,33 +20,13 @@ class Login extends Component {
     email: '',
     password: ''
   }
-  handleChange = e => {
-    let currentValue = e.target.value
-    let inputId = e.target.id
-
-    this.setState({ [inputId]: currentValue })
+  errorMessages = {
+    AUTH_MISMATCH_ERROR: 'Wrong username or password',
+    INVALID_EMAIL_ADDRESS: 'Invalid email address',
+    EMAIL_IS_REQUIRED: 'Email is required',
+    PASSWORD_IS_REQUIRED: 'Password is required',
+    UNKNOWN_LOGIN_ERROR: 'Cannot login user'
   }
-
-  authenticateLogin = async e => {
-    e.preventDefault()
-    try {
-      const { email, password } = this.state
-
-      let { data, statusCode } = await auth.loginUser(email, password)
-
-      if (statusCode === 200) {
-        auth.setToken(data.token)
-        window.location.href = '/todos'
-      }
-    } catch ({ message }) {
-      if (message.match(/email or password un match/gi)) {
-        this.props.enqueueSnackbar('Wrong username or password')
-      } else {
-        this.props.enqueueSnackbar('unknown login failure!')
-      }
-    }
-  }
-
   render() {
     return (
       <Container component="main" maxWidth="xs">
@@ -106,6 +86,41 @@ class Login extends Component {
         </div>
       </Container>
     )
+  }
+
+  handleChange = e => {
+    let currentValue = e.target.value
+    let inputId = e.target.id
+
+    this.setState({ [inputId]: currentValue })
+  }
+
+  authenticateLogin = async e => {
+    e.preventDefault()
+    try {
+      const { email, password } = this.state
+
+      let { data, statusCode } = await auth.loginUser(email, password)
+
+      if (statusCode === 200) {
+        auth.setToken(data.token)
+        window.location.href = '/todos'
+      }
+    } catch ({ message }) {
+      console.log(message)
+      message = this.composeLoginErrorMessage(message)
+      this.props.enqueueSnackbar(message)
+    }
+  }
+
+  composeLoginErrorMessage = errorMessage => {
+    if (errorMessage.match(/email or password un match/gi))
+      return this.errorMessages.AUTH_MISMATCH_ERROR
+    if (errorMessage.match(/email.*empty/gi))
+      return this.errorMessages.EMAIL_IS_REQUIRED
+    if (errorMessage.match(/password.*empty/gi))
+      return this.errorMessages.PASSWORD_IS_REQUIRED
+    else return this.errorMessages.UNKNOWN_LOGIN_ERROR
   }
 }
 

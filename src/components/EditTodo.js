@@ -15,6 +15,14 @@ class EditTodo extends Component {
     todoId: 0
   }
 
+  errorMessages = {
+    TITLE_IS_REQUIRED: 'Title is required',
+    NOTE_IS_REQUIRED: 'Note is required',
+    INVALID_PRIORITY: 'Empty priority',
+    INVALID_PRIORITY_VALUE: 'Invalid priority number',
+    UNKNOWN_EDIT_TODO_ERROR: 'Cannot submit edit todo'
+  }
+
   componentDidMount = async () => {
     try {
       let todoId = this.props.match.params.todoId
@@ -31,30 +39,6 @@ class EditTodo extends Component {
       console.log(message)
       this.props.enqueueSnackbar('Cannot fetch todo detail')
     }
-  }
-
-  saveTodoEdit = async () => {
-    try {
-      let todoId = this.state.todoId
-      let todo = { ...this.state }
-
-      if (todoId !== 'new') {
-        await todos.updateUserTodo(todoId, todo)
-      } else {
-        await todos.createNewUserTodo(todo)
-      }
-      window.location.href = '/todos'
-    } catch ({ message }) {
-      console.log(message)
-      this.props.enqueueSnackbar('Cannot save todo')
-    }
-  }
-
-  handleChange = e => {
-    let currentValue = e.target.value
-    let inputId = e.target.id
-
-    this.setState({ [inputId]: currentValue })
   }
 
   render() {
@@ -99,6 +83,43 @@ class EditTodo extends Component {
         </div>
       </Container>
     )
+  }
+
+  handleChange = e => {
+    let currentValue = e.target.value
+    let inputId = e.target.id
+
+    this.setState({ [inputId]: currentValue })
+  }
+
+  saveTodoEdit = async () => {
+    try {
+      let todoId = this.state.todoId
+      let todo = { ...this.state }
+
+      if (todoId !== 'new') {
+        await todos.updateUserTodo(todoId, todo)
+      } else {
+        await todos.createNewUserTodo(todo)
+      }
+      window.location.href = '/todos'
+    } catch ({ message }) {
+      console.log(message)
+      message = this.composeEditTodoErrorMessage(message)
+      this.props.enqueueSnackbar(message)
+    }
+  }
+
+  composeEditTodoErrorMessage = errorMessage => {
+    if (errorMessage.match(/title.*empty/gi))
+      return this.errorMessages.TITLE_IS_REQUIRED
+    if (errorMessage.match(/note.*empty/gi))
+      return this.errorMessages.NOTE_IS_REQUIRED
+    if (errorMessage.match(/priority.*number/gi))
+      return this.errorMessages.INVALID_PRIORITY
+    if (errorMessage.match(/priority.*must be one of/gi))
+      return this.errorMessages.INVALID_PRIORITY_VALUE
+    else return this.errorMessages.UNKNOWN_EDIT_TODO_ERROR
   }
 }
 

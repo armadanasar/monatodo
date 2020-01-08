@@ -28,26 +28,6 @@ class ToDoList extends Component {
     filterSelection: ''
   }
 
-  editToDo(todoIdx) {
-    window.location.href = `/todo/${todoIdx}`
-  }
-  deleteToDo = async todoIdx => {
-    try {
-      const targetTodoIdx = this.props.todos.findIndex(
-        todo => todo.id === todoIdx
-      )
-
-      const result = await todoApi.deleteUserTodo(todoIdx)
-      const todos = [...this.props.todos]
-
-      todos.splice(targetTodoIdx, 1)
-      this.props.setTodos(todos)
-    } catch ({ message }) {
-      console.log(message)
-      this.props.enqueueSnackbar('Cannot delete user todo')
-    }
-  }
-
   async componentDidMount() {
     try {
       let result = await todoApi.getUserTodos()
@@ -59,29 +39,7 @@ class ToDoList extends Component {
       this.props.enqueueSnackbar('Cannot get user todos')
     }
   }
-  onSearchQueryChange = async e => {
-    this.setState({ searchQuery: e.target.value })
-  }
-  onSearchFilterSelectionChange = async e => {
-    this.setState({ filterSelection: e.target.value })
-  }
-  onClickAddNewTodo = () => {
-    window.location.href = '/todo/new'
-  }
-  onSearchButtonClick = async () => {
-    try {
-      const { searchQuery, filterSelection } = this.state
 
-      let result = await todoApi.getUserTodos(searchQuery, filterSelection)
-
-      result = await result.json()
-
-      this.props.setTodos(result.data)
-    } catch ({ message }) {
-      console.error(message)
-      this.props.enqueueSnackbar('Cannot get user todos')
-    }
-  }
   render() {
     const { searchQuery, filterSelection } = this.state
     const { classes, todos, setTodos } = this.props
@@ -125,6 +83,51 @@ class ToDoList extends Component {
         </Paper>
       </div>
     )
+  }
+
+  onSearchQueryChange = async e => {
+    this.setState({ searchQuery: e.target.value })
+  }
+  onSearchFilterSelectionChange = async e => {
+    this.setState({ filterSelection: e.target.value })
+  }
+  onClickAddNewTodo = () => {
+    window.location.href = '/todo/new'
+  }
+  onSearchButtonClick = async () => {
+    try {
+      const { searchQuery, filterSelection } = this.state
+
+      let result = await todoApi.getUserTodos(searchQuery, filterSelection)
+
+      result = await result.json()
+
+      this.props.setTodos(result.data)
+    } catch ({ message }) {
+      console.error(message)
+      this.props.enqueueSnackbar('Cannot search user todos')
+    }
+  }
+
+  editToDo(todoIdx) {
+    window.location.href = `/todo/${todoIdx}`
+  }
+
+  deleteToDo = async todoIdx => {
+    try {
+      const targetTodoIdx = this.props.todos.findIndex(
+        todo => todo.id === todoIdx
+      )
+
+      const result = await todoApi.deleteUserTodo(todoIdx)
+      const todos = [...this.props.todos]
+
+      todos.splice(targetTodoIdx, 1)
+      this.props.setTodos(todos)
+    } catch ({ message }) {
+      console.log(message)
+      this.props.enqueueSnackbar('Cannot delete user todo')
+    }
   }
 }
 
