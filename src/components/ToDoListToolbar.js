@@ -38,6 +38,7 @@ class ToDoListToolbar extends Component {
             <MenuItem value={'undone'}>Undone</MenuItem>
           </Select>
         </FormControl>
+
         <div className="max-grow searchQueryPane">
           <TextField
             className="searchQuery"

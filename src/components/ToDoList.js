@@ -25,7 +25,7 @@ class ToDoList extends Component {
   state = {
     todos: [],
     searchQuery: '',
-    filterSelection: ''
+    filterSelection: 'all'
   }
 
   async componentDidMount() {
@@ -42,7 +42,8 @@ class ToDoList extends Component {
 
   render() {
     const { searchQuery, filterSelection } = this.state
-    const { classes, todos, setTodos } = this.props
+    console.log(filterSelection)
+
     return (
       <div style={{ width: '100%' }}>
         <Paper className="root">
@@ -50,8 +51,8 @@ class ToDoList extends Component {
             onSearchQueryChange={this.onSearchQueryChange}
             onSearchFilterSelectionChange={this.onSearchFilterSelectionChange}
             onClickAddNewTodo={this.onClickAddNewTodo}
-            searchQuery={searchQuery}
-            filterSelection={filterSelection}
+            searchQueryValue={searchQuery}
+            filterSelectionValue={filterSelection}
             onSearchButtonClick={this.onSearchButtonClick}
           ></ToDoListToolbar>
           <Table className="table" aria-label="simple table">
@@ -88,12 +89,15 @@ class ToDoList extends Component {
   onSearchQueryChange = async e => {
     this.setState({ searchQuery: e.target.value })
   }
+
   onSearchFilterSelectionChange = async e => {
     this.setState({ filterSelection: e.target.value })
   }
+
   onClickAddNewTodo = () => {
     window.location.href = '/todo/new'
   }
+
   onSearchButtonClick = async () => {
     try {
       const { searchQuery, filterSelection } = this.state
