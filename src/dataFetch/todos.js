@@ -1,4 +1,4 @@
-import { API_URL, JWT_TOKEN_KEY } from './apiSettings'
+import { API_URL } from './apiSettings'
 import auth from './auth'
 
 const getUserTodos = async (searchQuery, filterSelection) => {

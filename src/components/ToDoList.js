@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -7,9 +6,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import ToDoItem from './common/ToDoItem'
-import { withStyles } from '@material-ui/styles'
 import todoApi from '../dataFetch/todos'
-import MaterialTable from 'material-table'
 import ToDoListToolbar from './ToDoListToolbar'
 import { setTodo } from '../redux/todo/todoActions'
 import { connect } from 'react-redux'
@@ -123,7 +120,7 @@ class ToDoList extends Component {
         todo => todo.id === todoIdx
       )
 
-      const result = await todoApi.deleteUserTodo(todoIdx)
+      await todoApi.deleteUserTodo(todoIdx)
       const todos = [...this.props.todos]
 
       todos.splice(targetTodoIdx, 1)

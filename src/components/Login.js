@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
-import { withStyles } from '@material-ui/styles'
+
 import { withSnackbar } from 'notistack'
 
 import '../styles/Login.css'

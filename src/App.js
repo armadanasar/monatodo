@@ -1,24 +1,19 @@
 import React from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
-import './App.css'
 import Login from './components/Login'
 import Register from './components/Register'
 import Logout from './components/Logout'
 import ProtectedRoute from './components/common/ProtectedRoute'
-import ToDoItem from './components/common/ToDoItem'
 import ToDoList from './components/ToDoList'
 import PageHeader from './components/common/PageHeader'
 import PageFooter from './components/common/PageFooter'
-import Container from '@material-ui/core/Container'
 import EditTodo from './components/EditTodo'
-import ToDoListToolbar from './components/ToDoListToolbar'
-import { Provider } from 'react-redux'
-import store from './redux/store'
+import NotFound from './components/NotFound'
 
-const Placeholder = ({ text }) => {
-  return <h1>{text}</h1>
-}
+import './App.css'
 
 function App() {
   return (
@@ -35,10 +30,7 @@ function App() {
           <ProtectedRoute path="/todos" component={ToDoList} />
           <ProtectedRoute path="/todo/:todoId" component={EditTodo} />
           <ProtectedRoute path="/todo/new" component={EditTodo} />
-          <Route
-            path="/not-found"
-            component={props => <Placeholder text="not found 404" />}
-          />
+          <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/todos" />
           <Redirect to="/not-found" />
         </Switch>
