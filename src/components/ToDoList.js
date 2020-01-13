@@ -80,35 +80,28 @@ class ToDoList extends Component {
             filterSelectionValue={filterSelection}
             onSearchButtonClick={this.onSearchButtonClick}
           ></ToDoListToolbar>
-
-          {/* <div className="table"> */}
-            
-              <InfiniteScroll
-                pageStart={0}
-                loadMore={this.loadTodos}
-                hasMore={!isLoading && hasMoreItems}
-                loader={<div className="loader" key={0}>Loading ...</div>}
-              >
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={this.loadTodos}
+            hasMore={!isLoading && hasMoreItems}
+            loader={<div className="loader" key={0}>Loading ...</div>}
+          >
             <Table className="table" aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Task</TableCell>
-                    <TableCell align="right">Note</TableCell>
-                    <TableCell align="right">Is Done</TableCell>
-                    <TableCell align="right">Priority</TableCell>
-                    <TableCell align="right">Edit</TableCell>
-                    <TableCell align="right">Delete</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {items}
-                </TableBody>
-              </Table>
-            </InfiniteScroll>
-             
-          {/* </div> */}
-
-
+              <TableHead>
+                <TableRow>
+                  <TableCell>Task</TableCell>
+                  <TableCell align="right">Note</TableCell>
+                  <TableCell align="right">Is Done</TableCell>
+                  <TableCell align="right">Priority</TableCell>
+                  <TableCell align="right">Edit</TableCell>
+                  <TableCell align="right">Delete</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {items}
+              </TableBody>
+            </Table>
+          </InfiniteScroll>
         </Paper>
       </div>
     )
@@ -127,9 +120,10 @@ class ToDoList extends Component {
   }
 
   onSearchButtonClick = async () => {
-    this.setState({pageSkip: 0, hasMoreItems: true})
-    this.props.setTodos([])
-    await this.loadTodos()
+    this.setState((prevState) => ({pageSkip: 0, hasMoreItems: true, isLoading: true}), async () => {
+      this.props.setTodos([])
+      await this.loadTodos()
+    })
   }
 
   editToDo(todoIdx) {
