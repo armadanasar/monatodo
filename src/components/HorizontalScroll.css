@@ -1,0 +1,7 @@
+.horizontalScroll {
+    scroll-behavior: auto;
+    overflow-x: scroll;
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+}

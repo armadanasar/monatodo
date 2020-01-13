@@ -14,7 +14,8 @@ import EditTodo from './components/EditTodo'
 import NotFound from './components/NotFound'
 
 import './App.css'
-
+import Counter from './components/Counter'
+import HorizontalScroll from './components/HorizontalScroll'
 function App() {
   return (
     <Provider store={store}>
@@ -22,7 +23,9 @@ function App() {
         <header>
           <PageHeader />
         </header>
-
+        
+      <Counter/>
+      <HorizontalScroll/>
         <Switch>
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />

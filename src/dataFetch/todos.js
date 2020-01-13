@@ -1,13 +1,16 @@
 import { API_URL } from './apiSettings'
 import auth from './auth'
 
-const getUserTodos = async (searchQuery, filterSelection) => {
+const getUserTodos = async ({searchQuery, filterSelection, skip, limit}) => {
   try {
     const result = await fetch(
       `${API_URL}/todo/user?` +
         new URLSearchParams({
           filter: filterSelection || 'all',
-          q: searchQuery || ''
+          q: searchQuery || '',
+          skip,
+          limit
+        
         }),
       {
         method: 'get',
@@ -24,6 +27,8 @@ const getUserTodos = async (searchQuery, filterSelection) => {
       throw new Error(errorMessage)
     }
 
+    // const resultJson = await result.json()
+    // console.log(resultJson)
     return result
   } catch (err) {
     throw err
